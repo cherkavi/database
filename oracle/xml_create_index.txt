@@ -1,0 +1,73 @@
+Three type of indexes:
+	1 - Function-Based index
+	( Only for certain point to Leaf: /root/property_1/value, not for /root/*/value )
+	INDEX:
+		CREATE INDEX xml_table_index_1 ON xml_table (extractValue(xml_document, '/root/property_1/text()'))
+
+	2 - Oracle Text Index
+		CREATE INDEX xml_table_index_main_11 ON xml_table (xml_document) INDEXTYPE IS CTXSYS.CONTEXT
+		
+	
+	3 - Oracle XML Index 
+	INDEX:
+		CREATE INDEX xmlindex_ix ON "xml_table"(xml_document) INDEXTYPE IS XDB.XMLINDEX 
+		-- PARAMETERS ('PATHS (INCLUDE (/root/property_1))') -- it does not matter for query 
+
+------------------------------------------------------
+-----------        TYPE OF DATA      -------------
+------------------------------------------------------
+	1) xml_table
+<root>
+  <property_1>
+    <value id="1">AAB</value>
+    <value id="2">AAC</value>
+    <value id="3">AAD</value>
+    <value id="4">AAE</value>
+    <value id="5">AAF</value>
+  </property_1>
+  
+  
+	
+	2) xml_table2
+<root>
+  <property_1>
+    <value>
+      <key>1</key>
+      <key_value>AAB</key_value>
+    </value>
+    <value>
+      <key>2</key>
+      <key_value>AAC</key_value>
+    </value>
+	
+	3) xml_table3
+<root>
+  <property_1>AAB</property_1>
+  <property_2>AAC</property_2>
+
+
+
+
+------------------------------------------------------
+--------------        INFORMATION      ---------------
+------------------------------------------------------
+CREATE INDEX XMLINDEX_IX ON XMLBINARY_TBL (object_value)
+INDEXTYPE IS XDB.XMLIndex
+PARAMETERS ('PATHS (INCLUDE (/ROOT/ID
+                             /ROOT/INFO/INFO_ID
+                            )
+                    NAMESPACE MAPPING 
+                         (xmlns="http://localhost/xmlschema_bin.xsd")
+                   )
+             PATH TABLE      root_path_table
+             PATH ID INDEX   root_pathid_ix
+             ORDER KEY INDEX root_orderkey_ix
+             ASYNC (SYNC ALWAYS) STALE (FALSE)
+           ')
+create index IDX_8 on t1(XMLDATA) 
+indextype is xdb.xmlindex 
+PARAMETERS ( 'PATHS ( INCLUDE (/*/FIELDS/FIELD_1/FIELD_1_2
+							   /*/FIELDS/FIELD_1/FIELD_1_3))' );
+------------------------------------------------------
+------------------------------------------------------
+------------------------------------------------------
